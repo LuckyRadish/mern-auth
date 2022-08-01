@@ -15,8 +15,8 @@ export const requestRegister = (data: IRegistrationDetails) =>
   axios.post(`${AUTH_URL}/register`, data);
 
 export const requestMetadata = (url: string) => {
-  return axios.get(`${PREVIEW_URL}/${encodeURIComponent(url)}`);
+  return axios.post(`${PREVIEW_URL}/${encodeURIComponent(url)}`);
 };
 
 export const requestRecords = () =>
-  axios.get<{ data: any[] }>(`${PREVIEW_URL}/`);
+  axios.post<{ data: any[] }>(`${PREVIEW_URL}/`);

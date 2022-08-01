@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Container } from "react-bootstrap-v5";
 import { makeStyles } from "@material-ui/core";
-import { pick } from "lodash";
 import JsonView from "react-json-view";
 
 import { useAlert } from "../../hooks";

@@ -36,12 +36,14 @@ const Home: React.FC = () => {
   const handleSubmit = useCallback<React.FormEventHandler>(
     (e) => {
       e.preventDefault();
-      setMetadata({});
-      setWaiting();
-      requestMetadata(url)
-        .finally(unsetWaiting)
-        .then(({ data }) => setMetadata(data.metadata))
-        .catch(alertError);
+      if (!!url) {
+        setMetadata({});
+        setWaiting();
+        requestMetadata(url)
+          .finally(unsetWaiting)
+          .then(({ data }) => setMetadata(data.metadata))
+          .catch(alertError);
+      }
     }, // eslint-disable-next-line react-hooks/exhaustive-deps
     [url]
   );
