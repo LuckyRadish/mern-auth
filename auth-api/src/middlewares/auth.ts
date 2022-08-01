@@ -40,6 +40,7 @@ export const authorizeJWT: RequestHandler = (req, res, next) => {
     } else {
       Role.find({ $or: user.roles.map((title: string) => ({ title })) })
         .then((data) => {
+          console.log(data.map(({ roles }) => roles).flat());
           if (
             !data
               .map(({ roles }) => roles)
