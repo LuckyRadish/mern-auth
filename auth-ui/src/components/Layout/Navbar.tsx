@@ -20,7 +20,7 @@ export const MainNavbar: React.FC = () => {
           <Nav className="d-flex align-items-center ms-auto">
             {isLoggedIn && (
               <Link className="text-dark text-decoration-none me-3" to="/">
-                Home
+                Preview
               </Link>
             )}
             {isAdmin && (

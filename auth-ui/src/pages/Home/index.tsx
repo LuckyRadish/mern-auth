@@ -51,7 +51,7 @@ const Home: React.FC = () => {
       fluid
       className={`${classes.container} d-flex flex-column align-items-center`}
     >
-      <h1 className="text-center">Home</h1>
+      <h1 className="text-center">Preview Metadata</h1>
       <Form className={`${classes.form} m-auto mb-3`} onSubmit={handleSubmit}>
         <FormControl
           name="url"

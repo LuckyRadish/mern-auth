@@ -1,6 +1,8 @@
 import { Router } from "express";
 
 import { authenticateJWT } from "../../middlewares";
-import { retrieve } from "../../controllers/previewController";
+import { list, retrieve } from "../../controllers/previewController";
 
-export default Router().get("/", authenticateJWT, retrieve);
+export default Router()
+  .get("/", authenticateJWT, list)
+  .get("/:url", authenticateJWT, retrieve);

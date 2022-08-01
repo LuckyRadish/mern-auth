@@ -7,6 +7,7 @@ import {
   TableRow,
   TableSortLabel,
   Paper,
+  TablePagination,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 
@@ -17,7 +18,7 @@ type Order = "asc" | "desc";
 interface IRow {
   id: string;
   label: string;
-  format?: (_: any) => string;
+  format?: (_: any) => string | JSX.Element;
 }
 
 type HeadProps = {
@@ -71,6 +72,10 @@ const useStyles = makeStyles((theme) => ({
   tableWrapper: {
     overflowX: "auto",
   },
+  tableCell: {
+    maxWidth: 200,
+    overflow: "auto",
+  },
 }));
 
 type Props = {
@@ -86,6 +91,8 @@ const SimpleTable: React.FC<Props> = ({ data, headRows, defaultOrderBy }) => {
   const [orderBy, setOrderBy] = useState<string>(
     defaultOrderBy || headRows[0].id
   );
+  const [page, setPage] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(5);
 
   const handleRequestSort = useCallback(
     (e: MouseEvent, prop: string) => {
@@ -123,24 +130,30 @@ const SimpleTable: React.FC<Props> = ({ data, headRows, defaultOrderBy }) => {
                   </TableCell>
                 </TableRow>
               ) : data.length > 0 ? (
-                [...data].sort(cmp).map((row, index) => (
-                  <TableRow key={index} hover tabIndex={-1}>
-                    <TableCell className="px-1">{index + 1}</TableCell>
-                    {headRows.map(({ id, format }, index) => (
-                      <TableCell className="px-1" key={index}>
-                        <div className="d-flex align-items-center">
-                          <span className="me-3">
+                [...data]
+                  .sort(cmp)
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => (
+                    <TableRow key={index} hover tabIndex={-1}>
+                      <TableCell className="align-baseline px-1">
+                        {index + 1}
+                      </TableCell>
+                      {headRows.map(({ id, format }, index) => (
+                        <TableCell
+                          className={classes.tableCell + " align-baseline px-1"}
+                          key={index}
+                        >
+                          <div className="d-flex align-items-center">
                             {!row[id]
                               ? ""
                               : !format
                               ? row[id].toString()
                               : format(row[id])}
-                          </span>
-                        </div>
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
+                          </div>
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
               ) : (
                 <TableRow hover>
                   <TableCell
@@ -154,6 +167,17 @@ const SimpleTable: React.FC<Props> = ({ data, headRows, defaultOrderBy }) => {
             </TableBody>
           </Table>
         </div>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 20]}
+          component="div"
+          count={data?.length || 0}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={(e, value) => setPage(value)}
+          onRowsPerPageChange={({ target: { value } }) =>
+            setRowsPerPage(+value)
+          }
+        />
       </Paper>
     </div>
   );
